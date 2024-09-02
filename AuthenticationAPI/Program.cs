@@ -1,4 +1,6 @@
+using AuthenticationAPI.Contracts;
 using AuthenticationAPI.Data;
+using AuthenticationAPI.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +14,11 @@ var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
 
 builder.Services.AddControllers();
+
+builder.Services.AddScoped<IRegisterAdmin, RegisterAdminRepository>();
+builder.Services.AddScoped<ILoginRepository, LoginRepository>();
+builder.Services.AddScoped<IRegisterCustomer, RegisterCustomerRepository>();
+builder.Services.AddScoped<IRegisterVendor, RegisterVendorRepository>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
