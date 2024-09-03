@@ -48,7 +48,7 @@ namespace AuthenticationAPI.Controllers
 
         [HttpPost]
         [Route("register-customer")]
-        public async Task<IActionResult> RegisterCustomer([FromBody] RegisterCustomer model)
+        public async Task<IActionResult> RegisterCustomer([FromBody] ApplicationUser model)
         {
             var isRegistered = await _registerCustomerRepository.Register(model);
             if (isRegistered.Status == "Error")
@@ -59,7 +59,7 @@ namespace AuthenticationAPI.Controllers
         }
         [HttpPost]
         [Route("register-vendor")]
-        public async Task<IActionResult> RegisterVendor([FromBody] RegisterBusiness model)
+        public async Task<IActionResult> RegisterVendor([FromBody] ApplicationUser model)
         {
             var isRegistered = await _registerVendorRepository.RegisterVendor(model);
             if (isRegistered.Status == "Error")
@@ -70,7 +70,7 @@ namespace AuthenticationAPI.Controllers
         }
         [HttpPost]
         [Route("register-admin")]
-        public async Task<IActionResult> RegisterAdmin([FromBody] RegisterAdmin model)
+        public async Task<IActionResult> RegisterAdmin([FromBody] ApplicationUser model)
         {
             var registered = await _registerAdminRepository.RegisterAdmin(model);
             if (registered.Status == "Error")

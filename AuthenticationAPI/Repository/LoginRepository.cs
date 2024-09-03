@@ -10,9 +10,9 @@ namespace AuthenticationAPI.Repository
 {
     public class LoginRepository : ILoginRepository
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
-        public LoginRepository(UserManager<IdentityUser> userManager, IConfiguration configuration)
+        public LoginRepository(UserManager<ApplicationUser> userManager, IConfiguration configuration)
         {
             _userManager = userManager;
             _configuration = configuration;

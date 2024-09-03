@@ -23,7 +23,7 @@ builder.Services.AddScoped<IRegisterVendor, RegisterVendorRepository>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseSqlServer(configuration.GetConnectionString("JwtAuth"));
+    options.UseSqlServer(configuration.GetConnectionString("JwtAuthConnection"));
 });
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()

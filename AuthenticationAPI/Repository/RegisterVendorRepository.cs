@@ -7,27 +7,28 @@ namespace AuthenticationAPI.Repository
 {
     public class RegisterVendorRepository : IRegisterVendor
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        public RegisterVendorRepository(UserManager<IdentityUser> userManager)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public RegisterVendorRepository(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
         }
-        public async Task<Response> RegisterVendor(RegisterBusiness model)
+        public async Task<Response> RegisterVendor(ApplicationUser model)
         {
-            var userExists = await _userManager.FindByNameAsync(model.vendor_email);
+            var userExists = await _userManager.FindByNameAsync(model.Email);
             if (userExists != null)
             {
                 return new Response { Status = "Error", Message = "User Already Exists!!" };
             }
-            IdentityUser user = new()
+            ApplicationUser user = new()
             {
                 
-                Email = model.vendor_email,
+                Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = model.vendor_name,
-                PhoneNumber = model.vendor_phone,
+                UserName = model.UserName,
+                PhoneNumber = model.PhoneNumber,
+                Address = model.Address
             };
-            var result = await _userManager.CreateAsync(user, model.password);
+            var result = await _userManager.CreateAsync(user, model.PasswordHash);
             await _userManager.AddToRoleAsync(user, UserRoles.Vendor);
             if (!result.Succeeded)
             {

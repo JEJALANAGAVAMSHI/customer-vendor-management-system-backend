@@ -7,27 +7,28 @@ namespace AuthenticationAPI.Repository
 {
     public class RegisterAdminRepository : IRegisterAdmin
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        public RegisterAdminRepository(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        public RegisterAdminRepository(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;
         }
-        public async Task<Response> RegisterAdmin(RegisterAdmin model)
+        public async Task<Response> RegisterAdmin(ApplicationUser model)
         {
-            var userExists = await _userManager.FindByNameAsync(model.Username);
+            var userExists = await _userManager.FindByNameAsync(model.UserName);
             if (userExists != null)
             {
                 return new Response { Status = "Error", Message = "User already exists!" };
             }
-            IdentityUser user = new()
+            ApplicationUser user = new()
             {
                 Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = model.Username
+                UserName = model.UserName,
+                Address = model.Address,   
             };
-            var result = await _userManager.CreateAsync(user, model.Password);
+            var result = await _userManager.CreateAsync(user, model.PasswordHash);
             if (!result.Succeeded)
                 return new Response { Status = "Error", Message = "User creation failed! Please check user details and try again." };
 
