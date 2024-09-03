@@ -5,6 +5,6 @@ namespace AuthenticationAPI.Contracts
 {
     public interface IRegisterVendor
     {
-        public Task<Response> RegisterVendor(RegisterBusiness model);
+        public Task<Response> RegisterVendor(ApplicationUser model);
     }
 }
