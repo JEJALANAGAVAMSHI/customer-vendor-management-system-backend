@@ -1,5 +1,6 @@
 using AuthenticationAPI.Contracts;
 using AuthenticationAPI.Data;
+using AuthenticationAPI.Models;
 using AuthenticationAPI.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -22,9 +23,9 @@ builder.Services.AddScoped<IRegisterVendor, RegisterVendorRepository>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseSqlServer(configuration.GetConnectionString("JwtAuth"));
+    options.UseSqlServer(configuration.GetConnectionString("JwtAuthConnection"));
 });
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 

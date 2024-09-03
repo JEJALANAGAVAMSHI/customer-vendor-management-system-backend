@@ -7,26 +7,28 @@ namespace AuthenticationAPI.Repository
 {
     public class RegisterCustomerRepository : IRegisterCustomer
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        public RegisterCustomerRepository(UserManager<IdentityUser> userManager)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public RegisterCustomerRepository(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
         }
-        public async Task<Response> Register(RegisterCustomer model)
+        public async Task<Response> Register(ApplicationUser model)
         {
-            var userExists = await _userManager.FindByNameAsync(model.customer_name);
+            var userExists = await _userManager.FindByNameAsync(model.UserName);
             if (userExists != null)
             {
                 return new Response { Status = "Error", Message = "User Already Exists!!" };
             }
-            IdentityUser user = new()
+            ApplicationUser user = new()
             {
-                Email = model.customer_email,
+                Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = model.customer_name,
+                UserName = model.UserName,
+                Address = model.Address,
+                PhoneNumber = model.PhoneNumber
                 
             };
-            var result = await _userManager.CreateAsync(user, model.password);
+            var result = await _userManager.CreateAsync(user, model.PasswordHash);
             await _userManager.AddToRoleAsync(user, UserRoles.Customer);
             if (!result.Succeeded)
             {
