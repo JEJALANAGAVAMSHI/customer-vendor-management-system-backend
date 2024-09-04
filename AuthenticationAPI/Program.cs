@@ -1,5 +1,6 @@
 using AuthenticationAPI.Contracts;
 using AuthenticationAPI.Data;
+using AuthenticationAPI.Extensions;
 using AuthenticationAPI.Models;
 using AuthenticationAPI.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -63,6 +64,9 @@ builder.Services.AddAuthentication(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+
+var logger = app.Services.GetRequiredService<ILogger<Program>>();
+app.ConfigureExceptionHandler(logger);
 
 app.UseAuthorization();
 
