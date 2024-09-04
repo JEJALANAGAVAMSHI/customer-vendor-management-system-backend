@@ -26,7 +26,9 @@ namespace AuthenticationAPI.Repository
                 Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = model.UserName,
-                Address = model.Address,   
+                Address = "", 
+                State = "",
+                PostalCode = ""
             };
             var result = await _userManager.CreateAsync(user, model.PasswordHash);
             if (!result.Succeeded)
