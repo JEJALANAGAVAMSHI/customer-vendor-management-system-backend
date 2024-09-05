@@ -1,5 +1,6 @@
 ﻿using AuthenticationAPI.Contracts;
 using AuthenticationAPI.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -18,7 +19,7 @@ namespace AuthenticationAPI.Repository
             _configuration = configuration;
 
         }
-        public async Task<JwtSecurityToken> Login(Login model)
+        public async Task<IResult> Login(Login model)
         {
             var user = await _userManager.FindByNameAsync(model.Username);
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
@@ -34,7 +35,13 @@ namespace AuthenticationAPI.Repository
                     authClaims.Add(new Claim(ClaimTypes.Role, userRole));
                 }
                 var token = GetToken(authClaims);
-                return token;
+
+                return Results.Ok(new
+                {
+                    Token = new JwtSecurityTokenHandler().WriteToken(token),
+                    Expiration = token.ValidTo,
+                    roles = userRoles,
+                });
             }
             return null;
         }

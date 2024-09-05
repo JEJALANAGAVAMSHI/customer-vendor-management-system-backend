@@ -5,6 +5,6 @@ namespace AuthenticationAPI.Contracts
 {
     public interface ILoginRepository
     {
-        public Task<JwtSecurityToken> Login(Login model);
+        public Task<IResult> Login(Login model);
     }
 }

@@ -37,11 +37,7 @@ namespace AuthenticationAPI.Controllers
             var token = await _loginRepository.Login(model);
             if (token != null)
             {
-                return Ok(new
-                {
-                    token = new JwtSecurityTokenHandler().WriteToken(token),
-                    expiration = token.ValidTo
-                });
+                return Ok(token);
             }
             return Unauthorized();
         }
