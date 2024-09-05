@@ -51,22 +51,32 @@ namespace AuthenticationAPI.Controllers
         public async Task<IActionResult> RegisterCustomer([FromBody] ApplicationUser model)
         {
             var isRegistered = await _registerCustomerRepository.Register(model);
+            var response = new Response
+            {
+                Status = isRegistered.Status,
+                Message = isRegistered.Message
+            };
             if (isRegistered.Status == "Error")
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, isRegistered.Message);
             }
-            return Ok(isRegistered.Message);
+            return Ok(response);
         }
         [HttpPost]
         [Route("register-vendor")]
         public async Task<IActionResult> RegisterVendor([FromBody] ApplicationUser model)
         {
             var isRegistered = await _registerVendorRepository.RegisterVendor(model);
+            var response = new Response
+            {
+                Status = isRegistered.Status,
+                Message = isRegistered.Message
+            };
             if (isRegistered.Status == "Error")
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, isRegistered.Message);
             }
-            return Ok(isRegistered.Message);
+            return Ok(response);
         }
         [HttpPost]
         [Route("register-admin")]
