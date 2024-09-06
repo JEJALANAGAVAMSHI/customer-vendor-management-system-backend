@@ -18,17 +18,20 @@ namespace AuthenticationAPI.Controllers
         private readonly ILoginRepository _loginRepository;
         private readonly IRegisterCustomer _registerCustomerRepository;
         private readonly IRegisterVendor _registerVendorRepository;
+        private readonly ICustomerRepository _customerRepository;
 
         public AuthController(
             IRegisterAdmin registerAdminRepository,
             ILoginRepository loginRepostiory,
             IRegisterCustomer registerCustomerRepository,
-            IRegisterVendor registerVendorRepository)
+            IRegisterVendor registerVendorRepository,
+            ICustomerRepository customerRepository)
         {
            _registerAdminRepository = registerAdminRepository;
             _loginRepository = loginRepostiory;
             _registerCustomerRepository = registerCustomerRepository;
             _registerVendorRepository = registerVendorRepository;
+            _customerRepository = customerRepository;
         }
         [HttpPost]
         [Route("login")]
@@ -90,6 +93,17 @@ namespace AuthenticationAPI.Controllers
         public IActionResult Temp()
         {
             return Ok("Ok");
+        }
+        [HttpGet]
+        [Route("customers")]
+        public async Task<IActionResult> GetCustomers()
+        {
+            var customers = await _customerRepository.GetCustomers();
+            if(customers == null)
+            {
+                return NotFound();
+            }
+            return Ok(customers);
         }
     }
 }

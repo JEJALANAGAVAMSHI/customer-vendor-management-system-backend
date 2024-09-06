@@ -32,6 +32,7 @@ builder.Services.AddScoped<IRegisterAdmin, RegisterAdminRepository>();
 builder.Services.AddScoped<ILoginRepository, LoginRepository>();
 builder.Services.AddScoped<IRegisterCustomer, RegisterCustomerRepository>();
 builder.Services.AddScoped<IRegisterVendor, RegisterVendorRepository>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
