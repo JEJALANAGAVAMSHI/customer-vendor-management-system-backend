@@ -107,7 +107,17 @@ namespace AuthenticationAPI.Controllers
             return Ok(customers);
         }
 
-        
+        [HttpDelete]
+        [Route("delete-customer/{id}")]
+        public async Task<IActionResult> DeleteCustomer(string id)
+        {
+            var isDeleted = await _customerRepository.DeleteCustomerAsync(id);
+            if (isDeleted)
+            {
+                return Ok(new { Message = "Customer deleted successfully" });
+            }
+            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while deleting the customer.");
+        }
 
 
 
