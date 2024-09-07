@@ -1,5 +1,7 @@
 ﻿using Carter;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace CustomerVendorApi.Features.Admin.Queries.GetAllCustomersQuery
 {
@@ -7,8 +9,9 @@ namespace CustomerVendorApi.Features.Admin.Queries.GetAllCustomersQuery
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapGet("/customers", async (IMediator mediator) =>
+            app.MapGet("/customers", [Authorize(Roles="Admin")] async (HttpContext httpContext,IMediator mediator) =>
             {
+               
                 var query = new GetAllCustomersQuery();
                 var result = await mediator.Send(query);
                 return Results.Ok(result);

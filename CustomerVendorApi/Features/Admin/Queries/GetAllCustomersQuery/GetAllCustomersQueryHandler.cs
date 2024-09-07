@@ -19,13 +19,24 @@ namespace CustomerVendorApi.Features.Admin.Queries.GetAllCustomersQuery
     public class GetAllCustomersQueryHandler : IRequestHandler<GetAllCustomersQuery, GetAllCustomersResponse>
     {
         private readonly HttpClient _httpClient;
-        public GetAllCustomersQueryHandler(IHttpClientFactory httpClientFactory)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public GetAllCustomersQueryHandler(IHttpClientFactory httpClientFactory,
+            IHttpContextAccessor httpContextAccessor)
         {
             _httpClient = httpClientFactory.CreateClient("AuthService");
+            _httpContextAccessor = httpContextAccessor;
         }
         public async Task<GetAllCustomersResponse> Handle(GetAllCustomersQuery request, CancellationToken cancellationToken)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "your-jwt-token");
+            var authHeader = _httpContextAccessor.HttpContext.Request.Headers["Authorization"].ToString();
+
+            if (string.IsNullOrEmpty(authHeader))
+            {
+                throw new HttpRequestException("Authorization header is missing.");
+            }
+
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authHeader.Replace("Bearer ", ""));
+
             var response = await _httpClient.GetAsync("api/auth/customers", cancellationToken);
 
             if (response.IsSuccessStatusCode)
@@ -34,8 +45,8 @@ namespace CustomerVendorApi.Features.Admin.Queries.GetAllCustomersQuery
                 return new GetAllCustomersResponse { Customers = customers };
             }
 
-            // Handle error cases
-            throw new HttpRequestException($"Error fetching customers: {response.StatusCode}");
+            var content = await response.Content.ReadAsStringAsync();
+            throw new HttpRequestException($"Error fetching customers: {response.StatusCode}, Content: {content}");
         }
     }
 
