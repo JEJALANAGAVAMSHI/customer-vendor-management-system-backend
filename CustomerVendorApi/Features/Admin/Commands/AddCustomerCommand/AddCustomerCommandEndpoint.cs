@@ -1,5 +1,6 @@
 ﻿using Carter;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CustomerVendorApi.Features.Admin.Commands.AddCustomerCommand
@@ -8,7 +9,7 @@ namespace CustomerVendorApi.Features.Admin.Commands.AddCustomerCommand
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapPost("/register", async ([FromBody] AddCustomerCommand command, IMediator mediator) =>
+            app.MapPost("/register", [Authorize(Roles = "Admin")] async ([FromBody] AddCustomerCommand command, IMediator mediator) =>
             {
                 var result = await mediator.Send(command);
                 if (result)
