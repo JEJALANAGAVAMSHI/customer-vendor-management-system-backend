@@ -8,6 +8,6 @@ namespace AuthenticationAPI.Contracts
     {
         public Task<IEnumerable<CustomerDto>> GetCustomers();
 
-        
+        public Task<bool> DeleteCustomerAsync(string customerId);
     }
 }
