@@ -19,19 +19,22 @@ namespace AuthenticationAPI.Controllers
         private readonly IRegisterCustomer _registerCustomerRepository;
         private readonly IRegisterVendor _registerVendorRepository;
         private readonly ICustomerRepository _customerRepository;
+        private readonly IVendorRepository _vendorRepository;
 
         public AuthController(
             IRegisterAdmin registerAdminRepository,
             ILoginRepository loginRepostiory,
             IRegisterCustomer registerCustomerRepository,
             IRegisterVendor registerVendorRepository,
-            ICustomerRepository customerRepository)
+            ICustomerRepository customerRepository,
+            IVendorRepository vendorRepository)
         {
-           _registerAdminRepository = registerAdminRepository;
+            _registerAdminRepository = registerAdminRepository;
             _loginRepository = loginRepostiory;
             _registerCustomerRepository = registerCustomerRepository;
             _registerVendorRepository = registerVendorRepository;
             _customerRepository = customerRepository;
+            _vendorRepository = vendorRepository;
         }
         [HttpPost]
         [Route("login")]
@@ -118,6 +121,9 @@ namespace AuthenticationAPI.Controllers
             }
             return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while deleting the customer.");
         }
+
+        
+        
 
 
 
