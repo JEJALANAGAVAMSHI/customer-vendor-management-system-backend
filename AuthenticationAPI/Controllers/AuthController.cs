@@ -123,7 +123,17 @@ namespace AuthenticationAPI.Controllers
         }
 
         
-        
+        [HttpDelete]
+        [Route("delete-vendor/{vendorId}")]
+        public async Task<IActionResult> DeleteVendor([FromRoute] string vendorId)
+        {
+            var result = await _vendorRepository.DeleteVendorAsync(vendorId);
+            if (result)
+            {
+                return Ok(new { Message = "Vendor deleted successfully" });
+            }
+            return NotFound(new { Message = "Vendor not found" });
+        }
 
 
 
