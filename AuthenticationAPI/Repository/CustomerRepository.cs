@@ -17,7 +17,20 @@ namespace AuthenticationAPI.Repository
             _roleManager = roleManager;
         }
 
-       
+        public async Task<bool> DeleteCustomerAsync(string customerId)
+        {
+            
+                var customer = await _userManager.FindByIdAsync(customerId);
+
+                if (customer == null)
+                {
+                    return false;
+                }
+                var result = await _userManager.DeleteAsync(customer);
+
+                return result.Succeeded;
+            
+        }
 
         public async Task<IEnumerable<CustomerDto>> GetCustomers()
         {
