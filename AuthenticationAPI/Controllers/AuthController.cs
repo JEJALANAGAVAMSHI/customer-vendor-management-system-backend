@@ -19,19 +19,22 @@ namespace AuthenticationAPI.Controllers
         private readonly IRegisterCustomer _registerCustomerRepository;
         private readonly IRegisterVendor _registerVendorRepository;
         private readonly ICustomerRepository _customerRepository;
+        private readonly IVendorRepository _vendorRepository;
 
         public AuthController(
             IRegisterAdmin registerAdminRepository,
             ILoginRepository loginRepostiory,
             IRegisterCustomer registerCustomerRepository,
             IRegisterVendor registerVendorRepository,
-            ICustomerRepository customerRepository)
+            ICustomerRepository customerRepository,
+            IVendorRepository vendorRepository)
         {
-           _registerAdminRepository = registerAdminRepository;
+            _registerAdminRepository = registerAdminRepository;
             _loginRepository = loginRepostiory;
             _registerCustomerRepository = registerCustomerRepository;
             _registerVendorRepository = registerVendorRepository;
             _customerRepository = customerRepository;
+            _vendorRepository = vendorRepository;
         }
         [HttpPost]
         [Route("login")]
@@ -106,5 +109,33 @@ namespace AuthenticationAPI.Controllers
             }
             return Ok(customers);
         }
+
+        [HttpDelete]
+        [Route("delete-customer/{id}")]
+        public async Task<IActionResult> DeleteCustomer(string id)
+        {
+            var isDeleted = await _customerRepository.DeleteCustomerAsync(id);
+            if (isDeleted)
+            {
+                return Ok(new { Message = "Customer deleted successfully" });
+            }
+            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while deleting the customer.");
+        }
+
+        
+        [HttpDelete]
+        [Route("delete-vendor/{vendorId}")]
+        public async Task<IActionResult> DeleteVendor([FromRoute] string vendorId)
+        {
+            var result = await _vendorRepository.DeleteVendorAsync(vendorId);
+            if (result)
+            {
+                return Ok(new { Message = "Vendor deleted successfully" });
+            }
+            return NotFound(new { Message = "Vendor not found" });
+        }
+
+
+
     }
 }

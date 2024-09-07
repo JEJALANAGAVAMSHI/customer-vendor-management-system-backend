@@ -7,5 +7,7 @@ namespace AuthenticationAPI.Contracts
     public interface ICustomerRepository
     {
         public Task<IEnumerable<CustomerDto>> GetCustomers();
+
+        public Task<bool> DeleteCustomerAsync(string customerId);
     }
 }
