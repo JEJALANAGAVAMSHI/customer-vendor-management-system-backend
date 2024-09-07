@@ -7,10 +7,13 @@ namespace AuthenticationAPI.Repository
     public class VendorRepository : IVendorRepository
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public VendorRepository(UserManager<ApplicationUser> userManager)
+        public VendorRepository(UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public async Task<bool> DeleteVendorAsync(string vendorId)
@@ -32,6 +35,30 @@ namespace AuthenticationAPI.Repository
             return result.Succeeded;
         }
 
+        public async Task<IEnumerable<VendorDto>> GetVendors()
+        {
+            var vendorRole = await _roleManager.FindByNameAsync("Vendor");
+            if (vendorRole == null)
+            {
+                return null;
+            }
+
+            var vendors = await _userManager.GetUsersInRoleAsync(vendorRole.Name);
+
+            var vendorDtos = vendors.Select(v => new VendorDto
+            {
+                Id = v.Id,
+                UserName = v.UserName,
+                Email = v.Email,
+                PhoneNumber = v.PhoneNumber,
+                Address = v.Address,
+                State = v.State,
+                PostalCode = v.PostalCode,
+
+            }).ToList();
+
+            return vendorDtos;
+        }
 
 
 
