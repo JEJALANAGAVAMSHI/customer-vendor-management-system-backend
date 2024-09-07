@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AuthenticationAPI.Models;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections;
 
 namespace AuthenticationAPI.Contracts
 {
     public interface ICustomerRepository
     {
-        public Task<IEnumerable> GetCustomers();
+        public Task<IEnumerable<CustomerDto>> GetCustomers();
     }
 }

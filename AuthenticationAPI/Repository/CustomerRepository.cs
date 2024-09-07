@@ -16,7 +16,7 @@ namespace AuthenticationAPI.Repository
             _userManager = userManager;
             _roleManager = roleManager;
         }
-        public async Task<IEnumerable> GetCustomers()
+        public async Task<IEnumerable<CustomerDto>> GetCustomers()
         {
 
             var customerRole = await _roleManager.FindByNameAsync("Customer");
@@ -32,7 +32,6 @@ namespace AuthenticationAPI.Repository
                 Id = c.Id,
                 UserName = c.UserName,
                 Email = c.Email,
-                PasswordHash = c.PasswordHash,
                 PhoneNumber = c.PhoneNumber,
                 Address = c.Address,
                 State = c.State,
