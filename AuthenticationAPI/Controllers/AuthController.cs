@@ -135,6 +135,20 @@ namespace AuthenticationAPI.Controllers
             return NotFound(new { Message = "Vendor not found" });
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        [Route("vendors")]
+        public async Task<IActionResult> GetVendors()
+        {
+            var vendors = await _vendorRepository.GetVendors();
+            if (vendors == null)
+            {
+                return NotFound();
+            }
+            return Ok(vendors);
+        }
+
+
 
 
     }
