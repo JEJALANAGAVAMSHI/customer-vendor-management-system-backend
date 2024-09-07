@@ -1,5 +1,7 @@
 ﻿using Carter;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CustomerVendorApi.Features.Admin.Commands.DeleteCustomerCommand
@@ -8,9 +10,16 @@ namespace CustomerVendorApi.Features.Admin.Commands.DeleteCustomerCommand
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapDelete("/customer/{id}", async ([FromRoute] string id, IMediator mediator) =>
+            app.MapDelete("/customer/{id}", [Authorize(Roles = "Admin")] async ([FromRoute] string id, HttpContext httpContext, IMediator mediator) =>
             {
-                var result = await mediator.Send(new DeleteCustomerCommand { CustomerId = id });
+                var authHeader = httpContext.Request.Headers["Authorization"].ToString();
+
+                if (string.IsNullOrEmpty(authHeader))
+                {
+                    return Results.Unauthorized();
+                }
+
+                var result = await mediator.Send(new DeleteCustomerCommand { CustomerId = id, AuthorizationHeader = authHeader });
                 if (result)
                 {
                     return Results.Ok(new { Message = "Customer deleted successfully" });
