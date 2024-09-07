@@ -16,6 +16,9 @@ namespace AuthenticationAPI.Repository
             _userManager = userManager;
             _roleManager = roleManager;
         }
+
+       
+
         public async Task<IEnumerable<CustomerDto>> GetCustomers()
         {
 

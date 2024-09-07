@@ -106,5 +106,10 @@ namespace AuthenticationAPI.Controllers
             }
             return Ok(customers);
         }
+
+        
+
+
+
     }
 }
