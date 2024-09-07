@@ -3,6 +3,7 @@ using Mapster;
 using MediatR;
 using System.Text.Json;
 using System.Text;
+using System.Net.Http.Headers;
 
 namespace CustomerVendorApi.Features.Admin.Queries.GetAllCustomersQuery
 {
@@ -24,6 +25,7 @@ namespace CustomerVendorApi.Features.Admin.Queries.GetAllCustomersQuery
         }
         public async Task<GetAllCustomersResponse> Handle(GetAllCustomersQuery request, CancellationToken cancellationToken)
         {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "your-jwt-token");
             var response = await _httpClient.GetAsync("api/auth/customers", cancellationToken);
 
             if (response.IsSuccessStatusCode)

@@ -94,6 +94,7 @@ namespace AuthenticationAPI.Controllers
         {
             return Ok("Ok");
         }
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         [Route("customers")]
         public async Task<IActionResult> GetCustomers()
