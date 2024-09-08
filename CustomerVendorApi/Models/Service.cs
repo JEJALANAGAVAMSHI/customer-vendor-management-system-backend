@@ -1,11 +1,15 @@
-﻿namespace CustomerVendorApi.Models
+﻿using System.Text.Json.Serialization;
+
+namespace CustomerVendorApi.Models
 {
     public class Service
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public int ServiceId { get; set; }
+        public string ServiceName { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
-        public string VendorId { get; set; }
+        public int BusinessId { get; set; }
+        [JsonIgnore]
+        public Business Business { get; set; }
     }
 }
