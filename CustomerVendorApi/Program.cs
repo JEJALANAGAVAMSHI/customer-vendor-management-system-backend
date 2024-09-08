@@ -1,5 +1,8 @@
 using Carter;
+using CustomerVendorApi.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
 using System.Text;
@@ -12,6 +15,11 @@ var jwtSettings = builder.Configuration.GetSection("JWT");
 builder.Services.AddHttpClient("AuthService", client =>
 {
     client.BaseAddress = new Uri("http://localhost:5000/");
+});
+
+builder.Services.AddDbContext<ProductsServicesDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("CustomerVendorConnection"));
 });
 
 builder.Services.AddHttpContextAccessor();
