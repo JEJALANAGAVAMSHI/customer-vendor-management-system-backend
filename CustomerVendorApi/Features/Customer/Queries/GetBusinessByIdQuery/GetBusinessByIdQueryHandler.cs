@@ -32,6 +32,7 @@ namespace CustomerVendorApi.Features.Customer.Queries.GetBusinessByIdQuery
             // Map the business entity to the BusinessByIdDto
             var businessDto = new BusinessByIdDto
             {
+                BusinessId = business.BusinessId,
                 BusinessName = business.BusinessName,
                 Category = business.Category,
                 Address = business.Address,

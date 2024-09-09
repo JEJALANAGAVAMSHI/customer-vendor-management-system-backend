@@ -20,6 +20,7 @@ namespace CustomerVendorApi.Features.Customer.Queries.GetAllBusinessesQuery
             var businesses = await _context.Businesses
                 .Select(b => new BusinessDto
                 {
+                    BusinessId = b.BusinessId,
                     BusinessName = b.BusinessName,
                     Category = b.Category,
                     Address = b.Address,
