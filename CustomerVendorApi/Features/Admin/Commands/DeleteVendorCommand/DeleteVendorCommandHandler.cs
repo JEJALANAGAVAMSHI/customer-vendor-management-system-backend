@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using CustomerVendorApi.Data;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
@@ -16,11 +18,15 @@ namespace CustomerVendorApi.Features.Admin.Commands.DeleteVendorCommand
     {
         private readonly HttpClient _httpClient;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ProductsServicesDbContext _dbContext;
 
-        public DeleteVendorCommandHandler(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor)
+        public DeleteVendorCommandHandler(IHttpClientFactory httpClientFactory, 
+            IHttpContextAccessor httpContextAccessor,
+            ProductsServicesDbContext dbContext)
         {
             _httpClient = httpClientFactory.CreateClient("AuthService");
             _httpContextAccessor = httpContextAccessor;
+            _dbContext = dbContext;
         }
 
         public async Task<bool> Handle(DeleteVendorCommand request, CancellationToken cancellationToken)
@@ -33,7 +39,31 @@ namespace CustomerVendorApi.Features.Admin.Commands.DeleteVendorCommand
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", request.AuthorizationHeader.Replace("Bearer ", ""));
 
             var response = await _httpClient.DeleteAsync($"api/auth/delete-vendor/{request.VendorId}", cancellationToken);
-            return response.IsSuccessStatusCode;
+            if(!response.IsSuccessStatusCode)
+            {
+                return false;
+            }
+
+            // Delete from the Vendors table
+            var vendor = await _dbContext.Vendors.FindAsync(request.VendorId);
+            if (vendor == null)
+            {
+                throw new KeyNotFoundException($"Vendor with ID {request.VendorId} not found.");
+            }
+
+            // Delete associated businesses
+            var businesses = await _dbContext.Businesses
+                .Where(b => b.VendorId == request.VendorId)
+                .ToListAsync();
+
+            _dbContext.Businesses.RemoveRange(businesses);
+
+            // Finally, delete the vendor
+            _dbContext.Vendors.Remove(vendor);
+
+            await _dbContext.SaveChangesAsync();
+
+            return true;
         }
     }
 }
