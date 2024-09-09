@@ -2,6 +2,7 @@
 {
     public class BusinessDto
     {
+        public int BusinessId { get; set; }
         public string BusinessName { get; set; }
         public string Category { get; set; }
         public string Address { get; set; }
