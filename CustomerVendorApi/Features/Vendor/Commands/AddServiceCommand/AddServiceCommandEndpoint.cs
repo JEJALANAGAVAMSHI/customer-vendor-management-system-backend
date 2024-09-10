@@ -7,7 +7,7 @@ namespace CustomerVendorApi.Features.Vendor.Commands.AddServiceCommand
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapPost("/services/add", async (AddServiceCommand command, IMediator mediator) =>
+            app.MapPost("/vendor/services/add", async (AddServiceCommand command, IMediator mediator) =>
             {
                 var result = await mediator.Send(command);
                 return result ? Results.Ok("Service added successfully") : Results.BadRequest("Failed to add service");

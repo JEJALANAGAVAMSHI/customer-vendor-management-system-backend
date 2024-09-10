@@ -7,7 +7,7 @@ namespace CustomerVendorApi.Features.Vendor.Commands.AddProductCommand
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapPost("/products/add", async (AddProductCommand command, IMediator mediator) =>
+            app.MapPost("/vendor/products/add", async (AddProductCommand command, IMediator mediator) =>
             {
                 var result = await mediator.Send(command);
                 return result ? Results.Ok("Product added successfully") : Results.BadRequest("Failed to add product");
