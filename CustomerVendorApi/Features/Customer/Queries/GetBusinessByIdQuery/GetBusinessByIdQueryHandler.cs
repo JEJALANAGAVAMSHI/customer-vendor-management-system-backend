@@ -22,6 +22,7 @@ namespace CustomerVendorApi.Features.Customer.Queries.GetBusinessByIdQuery
             var business = await _context.Businesses
                 .Include(b => b.Products)
                 .Include(b => b.Services)
+                .Include(b => b.Events)
                 .FirstOrDefaultAsync(b => b.BusinessId == request.BusinessId, cancellationToken);
 
             if (business == null)
@@ -44,7 +45,8 @@ namespace CustomerVendorApi.Features.Customer.Queries.GetBusinessByIdQuery
                 TimeFrom = business.TimeFrom,
                 TimeTo = business.TimeTo,
                 Products = business.Products,
-                Services = business.Services
+                Services = business.Services,
+                Events = business.Events
             };
 
             return businessDto;
