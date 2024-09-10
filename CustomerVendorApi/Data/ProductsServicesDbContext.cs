@@ -11,6 +11,7 @@ namespace CustomerVendorApi.Data
         public DbSet<Service> Services { get; set; }
         public DbSet<Vendor> Vendors { get; set; }
         public DbSet<Business> Businesses { get; set; }
+        public DbSet<Event> Events { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

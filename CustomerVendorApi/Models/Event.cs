@@ -1,4 +1,6 @@
-﻿namespace CustomerVendorApi.Models
+﻿using System.Text.Json.Serialization;
+
+namespace CustomerVendorApi.Models
 {
     public class Event
     {
@@ -8,8 +10,8 @@
         public string Description { get; set; } 
         public DateTime Date { get; set; } 
         public TimeOnly TimeFrom { get; set; } 
-        public TimeOnly TimeTo { get; set; } 
-
+        public TimeOnly TimeTo { get; set; }
+        [JsonIgnore]
         public Business Business { get; set; } // Navigation property to Busines
     }
 }
