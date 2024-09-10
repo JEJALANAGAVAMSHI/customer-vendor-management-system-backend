@@ -4,6 +4,7 @@ using CustomerVendorApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CustomerVendorApi.Migrations
 {
     [DbContext(typeof(ProductsServicesDbContext))]
-    partial class ProductsServicesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240910043532_fourth")]
+    partial class fourth
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -113,38 +116,6 @@ namespace CustomerVendorApi.Migrations
                     b.ToTable("Events");
                 });
 
-            modelBuilder.Entity("CustomerVendorApi.Models.Offer", b =>
-                {
-                    b.Property<int>("OfferId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OfferId"));
-
-                    b.Property<int>("BusinessId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DateFrom")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DateTo")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OfferName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("OfferId");
-
-                    b.HasIndex("BusinessId");
-
-                    b.ToTable("Offers");
-                });
-
             modelBuilder.Entity("CustomerVendorApi.Models.Product", b =>
                 {
                     b.Property<int>("ProductId")
@@ -239,17 +210,6 @@ namespace CustomerVendorApi.Migrations
                     b.Navigation("Business");
                 });
 
-            modelBuilder.Entity("CustomerVendorApi.Models.Offer", b =>
-                {
-                    b.HasOne("CustomerVendorApi.Models.Business", "Business")
-                        .WithMany("Offers")
-                        .HasForeignKey("BusinessId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Business");
-                });
-
             modelBuilder.Entity("CustomerVendorApi.Models.Product", b =>
                 {
                     b.HasOne("CustomerVendorApi.Models.Business", "Business")
@@ -275,8 +235,6 @@ namespace CustomerVendorApi.Migrations
             modelBuilder.Entity("CustomerVendorApi.Models.Business", b =>
                 {
                     b.Navigation("Events");
-
-                    b.Navigation("Offers");
 
                     b.Navigation("Products");
 
