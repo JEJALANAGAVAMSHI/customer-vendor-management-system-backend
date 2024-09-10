@@ -10,7 +10,7 @@ namespace CustomerVendorApi.Features.Vendor.Commands.AddEventCommand
             app.MapPost("/vendor/events/add", async (AddEventCommand command, IMediator mediator) =>
             {
                 var result = await mediator.Send(command);
-                return result ? Results.Ok("Event added successfully") : Results.BadRequest("Failed to add product");
+                return result ? Results.Ok("Event added successfully") : Results.BadRequest("Failed to add event");
             }).RequireAuthorization();
         }
     }

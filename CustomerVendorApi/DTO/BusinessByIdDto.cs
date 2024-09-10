@@ -7,5 +7,6 @@ namespace CustomerVendorApi.DTO
         public ICollection<Product> Products { get; set; }
         public ICollection<Service> Services { get; set; }
         public ICollection<Event> Events { get; set; }
+        public ICollection<Offer> Offers { get; set; }
     }
 }

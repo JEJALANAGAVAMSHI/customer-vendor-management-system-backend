@@ -59,7 +59,7 @@ namespace CustomerVendorApi.Features.Vendor.Commands.AddEventCommand
 
             if (updatedEvent?.Events == null || !updatedEvent.Events.Any(s => s.EventName == request.EventName))
             {
-                throw new InvalidOperationException("Failed to add the product to the business.");
+                throw new InvalidOperationException("Failed to add the event to the business.");
             }
 
             return result > 0;

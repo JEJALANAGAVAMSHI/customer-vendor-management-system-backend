@@ -14,7 +14,7 @@ namespace CustomerVendorApi.Features.Vendor.Queries.GetAllEventsQuery
 
                 if (events == null || events.Count == 0)
                 {
-                    return Results.NotFound("No services found for this business.");
+                    return Results.NotFound("No events found for this business.");
                 }
 
                 return Results.Ok(events);

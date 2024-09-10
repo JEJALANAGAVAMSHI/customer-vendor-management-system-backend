@@ -12,6 +12,7 @@ namespace CustomerVendorApi.Data
         public DbSet<Vendor> Vendors { get; set; }
         public DbSet<Business> Businesses { get; set; }
         public DbSet<Event> Events { get; set; }
+        public DbSet<Offer> Offers { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -150,6 +151,33 @@ namespace CustomerVendorApi.Data
             modelBuilder.Entity<Event>()
                 .Property(e => e.TimeTo)
                 .HasColumnType("time");
+            
+            modelBuilder.Entity<Offer>()
+               .HasKey(e => e.OfferId);
+
+            modelBuilder.Entity<Offer>()
+                .HasOne(e => e.Business)
+                .WithMany(b => b.Offers)
+                .HasForeignKey(e => e.BusinessId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Offer>()
+                .Property(e => e.OfferName)
+                .IsRequired();
+
+            modelBuilder.Entity<Offer>()
+                .Property(e => e.Description)
+                .IsRequired();
+
+            modelBuilder.Entity<Offer>()
+                .Property(e => e.DateFrom)
+                .IsRequired();
+
+            modelBuilder.Entity<Offer>()
+                .Property(e => e.DateTo)
+                .IsRequired();
+
+            
 
         }
     }
