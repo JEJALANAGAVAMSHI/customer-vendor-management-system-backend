@@ -8,7 +8,7 @@ namespace CustomerVendorApi.Features.Vendor.Commands.DeleteProductCommand
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapDelete("/products/{id}", [Authorize(Roles = "Vendor")] async (int id, IMediator mediator) =>
+            app.MapDelete("/vendor/products/{id}", [Authorize(Roles = "Vendor")] async (int id, IMediator mediator) =>
             {
                 var command = new DeleteProductCommand { ProductId = id };
                 await mediator.Send(command);
