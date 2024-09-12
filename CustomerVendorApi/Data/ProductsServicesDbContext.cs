@@ -13,6 +13,7 @@ namespace CustomerVendorApi.Data
         public DbSet<Business> Businesses { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<Offer> Offers { get; set; }
+        public DbSet<Location> Location {  get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -64,6 +65,12 @@ namespace CustomerVendorApi.Data
             modelBuilder.Entity<Business>()
                 .Property(b => b.TimeTo)
                 .HasColumnType("time");
+
+            modelBuilder.Entity<Business>()
+
+            .HasOne(b => b.Location)
+            .WithOne(bl => bl.Business)
+            .HasForeignKey<Location>(bl => bl.BusinessId);
 
             // Service entity configuration
             modelBuilder.Entity<Service>()
@@ -176,8 +183,9 @@ namespace CustomerVendorApi.Data
             modelBuilder.Entity<Offer>()
                 .Property(e => e.DateTo)
                 .IsRequired();
+            modelBuilder.Entity<Location>()
+            .HasKey(b => b.LocationId);
 
-            
 
         }
     }

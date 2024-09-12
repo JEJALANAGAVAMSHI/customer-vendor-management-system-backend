@@ -21,6 +21,6 @@
         public ICollection<Service> Services { get; set; } = new List<Service>();
         public ICollection<Event> Events { get; set; } = new List<Event>();
         public ICollection<Offer> Offers { get; set; } = new List<Offer>();
-
+        public Location Location { get; set; }
     }
 }

@@ -39,6 +39,7 @@ namespace CustomerVendorApi.Features.Vendor.Queries.GetAllBusinessessQuery
                 .Include(b => b.Services)  // Include services
                 .Include(b => b.Products)
                 .Include(b => b.Events)
+                .Include(b => b.Location)
                 .ToListAsync(cancellationToken);
 
             return businesses;
